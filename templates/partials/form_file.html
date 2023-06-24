@@ -1,0 +1,23 @@
+<form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    
+    <div class="mb-3 mt-5">
+        {%if form.files.errors%}
+        <div class="alert alert-danger align-items-center">
+            {%for error in form.files.errors%}
+            {{error}}
+            {%endfor%}
+        </div>
+        {%endif%}
+        
+        {{form.files}}
+
+    </div>
+    
+    <div class="mb-3 mt-2 text-left">
+        <button type="submit" class="btn btn-outline-primary">
+            Juntar PDF
+        </button>
+    </div>
+
+</form>
