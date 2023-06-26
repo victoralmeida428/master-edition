@@ -11,13 +11,15 @@ import io
 class Merge(View):
     template_name = "pdf/merge.html"
     form_class = PdfInput
-    success_url = "merge_sucess"
+    success_url = "merge"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        context = {'form': form,
+                   'button': 'Juntar PDF'}
+        return render(request, self.template_name, context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             files = request.FILES.getlist('files')
@@ -35,10 +37,9 @@ class Merge(View):
             response.write(output_buffer.getvalue())
             
             return response
-        else:
-            return render(request, self.template_name, {'form': form})
+        context = {'form': form,
+                   'button': 'Juntar PDF'}
+        return render(request, self.template_name, context=context)
 
-    
-def merge_sucess(request):
-    return render(request, 'pdf/merge_sucess.html')
+
 

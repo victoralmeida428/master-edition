@@ -2,5 +2,5 @@ from apps.word.views import *
 from django.urls import path
 
 urlpatterns = [
-    path('word', word_index, name='word'),
+    path('word', Word.as_view(), name='word'),
 ]
