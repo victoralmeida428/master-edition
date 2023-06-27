@@ -9,15 +9,13 @@ COPY requirements.txt .
 
 # Instala as dependências do projeto
 RUN pip install -r requirements.txt
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6
 
 # Copia o restante dos arquivos do projeto para o contêiner
 COPY . .
 
 # Expõe a porta em que o servidor do Django estará executando (ajuste de acordo com sua configuração)
 EXPOSE 8000
-
-
 
 # Define o comando a ser executado quando o contêiner for iniciado
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
