@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+{%load plotly_dash%}
+<div class="container text-center">
+    <div class="container text-left">
+        <div class="container text-center mt-3">
+        <h1>Pegue as coordenadas da sua lista de CEP</h1>
+        </div>
+        {%include 'partials/form_file.html'%}
+    </div>
+</div>
+<div class="dash">
+    <div class="{% plotly_class name='mapa' %} card" >
+        {% plotly_app name='mapa' ratio=0.75 %}
+    </div>
+</div>
+{% endblock %}
