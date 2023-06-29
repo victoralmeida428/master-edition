@@ -9,8 +9,16 @@
             {%endfor%}
         </div>
         {%endif%}
+        {%for field in form%}
+        <div class="form-floating mb-3">
+            {%if field.errors%}
+            {field.errors}
+            {%endif%}
+            {{field}}
+            <label for="{{field.id}}">{{field.label}}</label>
+        </div>
 
-        {{form.files}}
+        {%endfor%}
 
     </div>
 

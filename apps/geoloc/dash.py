@@ -1,3 +1,4 @@
+import math
 import plotly
 import dash_bootstrap_components as dbc
 from dash import html, dcc
@@ -10,7 +11,8 @@ import re
 import pandas as pd
 
 class Mapa:
-    def __init__(self, df):
+    def __init__(self, df, col):
+        self.col = col
         self.df = df
 
     def criar_mapa(self):
@@ -26,22 +28,12 @@ class Mapa:
         coordenada = nom.geocode(x)
         if coordenada:
             return coordenada.latitude, coordenada.longitude
-
-    def tratar_cep(self):
-        """Padronizando o cep: Retirando o que não é numérico e preenchendo com 0's, se necessário, no início"""
-        df = self.df
-        df['CEP'] = df['CEP'].astype(str)
-        df['CEP'] = df['CEP'].apply(lambda x: re.sub('[^0-9]', '', x).zfill(8))
-        df['CEP'] = df['CEP'].apply(lambda x: f'{x[:5]}-{x[-3:]}')
-        return df
     
     def requisicao(self, df):
-        df[['Latitude', 'Longitude']] = df['CEP'].apply(lambda x: pd.Series(self.encontrar_coordenadas(x)))
+        df[['Latitude', 'Longitude']] = df[self.col].apply(lambda x: pd.Series(self.encontrar_coordenadas(x)))
         return df
     def gerar_grafico(self):
-        # Cria o mapa usando o Plotly
-        df = self.tratar_cep()
-        df = self.requisicao(df)
+        df = self.requisicao(self.df)
         fig = go.Figure(go.Scattermapbox(
             lat=(df['Latitude']),
             lon=(df['Longitude']),
@@ -51,7 +43,7 @@ class Mapa:
                 color='rgb(0, 100, 58)',
                 opacity=0.7
             ),
-            text=df['CEP'],
+            text=df[self.col],
         ))
         # Configura o layout do mapa
         fig.update_layout(
@@ -59,4 +51,26 @@ class Mapa:
             mapbox_center_lon=0,
             margin={'r': 0, 't': 0, 'l': 0, 'b': 0}
         )
+        # Obtém os valores mínimos e máximos de latitude e longitude
+        lat_min, lat_max = df['Latitude'].min(), df['Latitude'].max()
+        lon_min, lon_max = df['Longitude'].min(), df['Longitude'].max()
+        
+        # Calcula o centro do mapa
+        center_lat = (lat_min + lat_max) / 2
+        center_lon = (lon_min + lon_max) / 2
+        # Calcula a extensão das coordenadas
+        lat_extent = lat_max - lat_min
+        lon_extent = lon_max - lon_min
+        # Define o nível de zoom
+        zoom_lat = math.log10(360 / lat_extent) / math.log10(2)
+        zoom_lon = math.log10(360 / lon_extent) / math.log10(2)
+        zoom = min(zoom_lat, zoom_lon)
+            
+        # Configura o layout do mapa com o zoom nas coordenadas marcadas
+        fig.update_layout(
+        mapbox={
+            'center': {'lon': center_lon, 'lat': center_lat},
+            'zoom': zoom
+        }
+    )
         return fig

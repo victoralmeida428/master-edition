@@ -23,9 +23,10 @@ class GeoLoc(View):
         df = pd.DataFrame({'CEP':['0000000']})
         if form.is_valid():
             file = request.FILES.getlist('files')[0]
+            col = form.cleaned_data['busca']
             df = pd.read_excel(file)
         
-        Mapa(df).criar_mapa()
+        Mapa(df, col).criar_mapa()
         context ={
             'form':form,
             'button': 'Pegar Coordenadas',
