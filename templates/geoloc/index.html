@@ -11,8 +11,12 @@
     </div>
 </div>
 <div class="dash">
+    {%if request.method == 'POST'%}
     <div class="{% plotly_class name='mapa' %} card" >
+        
         {% plotly_app name='mapa' ratio=0.75 %}
+        
     </div>
+    {%endif%}
 </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View
-from apps.pdf.forms import PdfInput
+from apps.geoloc.forms import ExcelInput
 from apps.geoloc.dash import Mapa
 import pandas as pd
 from time import time
@@ -8,19 +8,27 @@ from time import time
 
 class GeoLoc(View):
     template_name='geoloc/index.html'
-    class_form = PdfInput
+    class_form = ExcelInput
 
     def get(self, request):
         form = self.class_form()
-        df = pd.DataFrame({'CEP':['23012-120', '23085-110','23090-820']})
-        inicio=time()
-        mapa = Mapa(df).criar_mapa()
-        fim = time()
-        print(fim-inicio)
         context ={
             'form':form,
             'button': 'Pegar Coordenadas',
-            'dash': mapa
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        form = self.class_form(request.POST, request.FILES)
+        df = pd.DataFrame({'CEP':['0000000']})
+        if form.is_valid():
+            file = request.FILES.getlist('files')[0]
+            df = pd.read_excel(file)
+        
+        Mapa(df).criar_mapa()
+        context ={
+            'form':form,
+            'button': 'Pegar Coordenadas',
         }
         return render(request, self.template_name, context)
     

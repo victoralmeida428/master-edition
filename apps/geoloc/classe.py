@@ -1,6 +1,4 @@
-import requests
 import pandas as pd
-import numpy as np
 from geopy.geocoders import ArcGIS
 import re
 
