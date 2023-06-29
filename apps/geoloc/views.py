@@ -21,6 +21,7 @@ class GeoLoc(View):
     def post(self, request):
         form = self.class_form(request.POST, request.FILES)
         df = pd.DataFrame({'CEP':['0000000']})
+        col = 'CEP'
         if form.is_valid():
             file = request.FILES.getlist('files')[0]
             col = form.cleaned_data['busca']
