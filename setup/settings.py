@@ -39,11 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.editvideo.apps.EditvideoConfig',
-    'apps.excel.apps.ExcelConfig',
     'apps.editimage.apps.EditimageConfig',
     'apps.pdf.apps.PdfConfig',
     'apps.user.apps.UserConfig',
-    'apps.word.apps.WordConfig',
     'apps.geoloc.apps.GeolocConfig',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]

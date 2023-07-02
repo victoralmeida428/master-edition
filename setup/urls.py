@@ -5,8 +5,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.user.urls')),
     path('', include('apps.pdf.urls')),
-    path('', include('apps.word.urls')),
-    path('', include('apps.excel.urls')),
     path('', include('apps.editimage.urls')),
     path('', include('apps.editvideo.urls')),
     path('', include('apps.geoloc.urls')),

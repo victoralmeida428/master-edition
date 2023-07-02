@@ -20,15 +20,17 @@
                           <li><a class="dropdown-item" href="{%url 'word'%}">Converter Word</a></li>
                         </ul>
                       </li>
+                {%if 1 == 2%}
                 <a class="nav-link {% if request.path == '/video' %}active{% endif %}"" href="{%url 'video'%}">Video</a>
                 <a class="nav-link {% if request.path == '/image' %}active{% endif %}"" href="{%url 'image'%}">Image</a>
+                {%endif%}
                 <a class="nav-link {% if request.path == '/geoloc' %}active{% endif %}"" href="{%url 'geoloc'%}">GeoLoc</a>
             </div>
         </div>
         {%if not user.is_authenticated%}
         <ul class="nav justify-content-end mr-3">
             <li class="nav-item" style="margin-right: 15px;"> 
-                {% include 'user/login.html' %}
+                <a href="{%url 'login'%}"><button class="btn btn-outline-primary menu">Login</button></a>
             </li>
             <li class="nav-item" style="margin-right: 15px;">
                 <a href="{%url 'cadastro'%}"><button class="btn btn-outline-primary menu">Cadastro</button></a>
@@ -37,7 +39,7 @@
         {%else%}
         <ul class="nav justify-content-end mr-3">
             <li class="nav-item" style="margin-right: 15px;"> 
-                {% include 'user/settings.html' %}
+                {% include 'settings.html' %}
             </li>
             <li class="nav-item" style="margin-right: 15px;">
                 <a href="{%url 'logout'%}"><button class="btn btn-outline-primary menu">Logout</button></a>
