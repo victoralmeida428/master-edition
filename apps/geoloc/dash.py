@@ -6,6 +6,7 @@ import dash
 from django_plotly_dash import DjangoDash
 from geopy.geocoders import ArcGIS
 import plotly.graph_objects as go
+import plotly.express as px
 import multiprocessing
 import re
 import pandas as pd
@@ -35,16 +36,17 @@ class Mapa:
     def gerar_grafico(self):
         df = self.requisicao(self.df)
         fig = go.Figure(go.Scattermapbox(
-            lat=(df['Latitude']),
-            lon=(df['Longitude']),
+            lat=df['Latitude'],
+            lon=df['Longitude'],
             mode='markers',
             marker=go.scattermapbox.Marker(
                 size=15,
                 color='rgb(0, 100, 58)',
                 opacity=0.7
             ),
-            text=df[self.col],
+            text=df,
         ))
+
         # Configura o layout do mapa
         fig.update_layout(
             mapbox_style='open-street-map',

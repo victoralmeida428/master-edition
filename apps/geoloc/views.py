@@ -1,14 +1,24 @@
 from typing import Any, Dict
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import View, FormView
 from apps.geoloc.forms import ExcelInput
 from apps.geoloc.dash import Mapa
 import pandas as pd
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import RedirectView
 # Create your views here.
 
-class GeoLoc(FormView):
+class RedirectLogin(RedirectView):
+    url = reverse_lazy('login')
+    def get(self, request, *args, **kwargs):
+        messages.error(request, 'Faça login para continuar')
+        return super().get(request, *args, **kwargs)
+
+class GeoLoc(LoginRequiredMixin, FormView):
     template_name = "geoloc.html"
     form_class = ExcelInput
     success_url = "geoloc"

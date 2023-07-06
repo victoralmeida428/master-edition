@@ -26,27 +26,25 @@
                 {%endif%}
                 <a class="nav-link {% if request.path == '/geoloc' %}active{% endif %}"" href="{%url 'geoloc'%}">GeoLoc</a>
             </div>
-        </div>
-        {%if not user.is_authenticated%}
-        <ul class="nav justify-content-end mr-3">
-            <li class="nav-item" style="margin-right: 15px;"> 
-                <a href="{%url 'login'%}"><button class="btn btn-outline-primary menu">Login</button></a>
-            </li>
-            <li class="nav-item" style="margin-right: 15px;">
-                <a href="{%url 'cadastro'%}"><button class="btn btn-outline-primary menu">Cadastro</button></a>
-            </li>
-        </ul>
-        {%else%}
-        <ul class="nav justify-content-end mr-3">
-            <li class="nav-item" style="margin-right: 15px;"> 
-                {% include 'settings.html' %}
-            </li>
-            <li class="nav-item" style="margin-right: 15px;">
-                <a href="{%url 'logout'%}"><button class="btn btn-outline-primary menu">Logout</button></a>
-            </li>
-        </ul>
-
-
-        {%endif%}
     </div>
+    {%if not user.is_authenticated%}
+    <ul class="nav justify-content-end mr-3">
+        <li class="nav-item" style="margin-right: 15px;"> 
+            <a href="{%url 'login'%}"><button class="btn btn-outline-primary menu">Login</button></a>
+        </li>
+        <li class="nav-item" style="margin-right: 15px;">
+            <a href="{%url 'cadastro'%}"><button class="btn btn-outline-primary menu">Cadastro</button></a>
+        </li>
+    </ul>
+    {%else%}
+    <ul class="nav justify-content-end mr-3">
+        <li class="nav-item" style="margin-right: 15px;"> 
+            <a href="{%url 'accounthome'%}"><button class="btn btn-outline-ligth menu">Conta</button></a>
+        </li>
+        <li class="nav-item" style="margin-right: 15px;">
+            <a href="{%url 'logout'%}"><button class="btn btn-outline-primary menu">Logout</button></a>
+        </li>
+    </ul>
+    </div>
+    {%endif%}
 </nav>
