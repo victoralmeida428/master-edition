@@ -75,5 +75,47 @@ class PixForm(forms.Form):
     choices = ((5,'5,00'),(10,'10,00'), (15,'15,00'), (25,'25,00'), (50,'50,00'))
     doacao = forms.ChoiceField(choices=choices, label='Doação (R$)')
 
+class ForgotPassForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            widget_attrs = field.widget.attrs
+            widget_attrs['class'] = 'form-control mb-4'
 
+    email = forms.EmailField()
 
+    def clean(self):        
+        email_form = self.cleaned_data.get('email')
+        user = User.objects.filter(email=email_form).first()
+        if not user:
+            self.add_error('email', 'E-mail não cadastrado')
+
+        return self.cleaned_data
+        
+class ChangeForgotPassForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            widget_attrs = field.widget.attrs
+            widget_attrs['class'] = 'form-control mb-4'
+
+    password1 = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput())
+
+    def clean(self):
+        pass1 = self.cleaned_data.get('password1')
+        pass2 = self.cleaned_data.get('password2')
+        if pass1!=pass2:
+            self.add_error('password1', 'Senhas não coincidem')
+
+class PinConfirmedForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            widget_attrs = field.widget.attrs
+            widget_attrs['class'] = 'form-control mb-4'
+            
+    pin = forms.IntegerField(max_value=999999, min_value=100000)

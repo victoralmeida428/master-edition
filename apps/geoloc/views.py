@@ -10,12 +10,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView
+from django.utils.safestring import mark_safe
 # Create your views here.
 
 class RedirectLogin(RedirectView):
     url = reverse_lazy('login')
     def get(self, request, *args, **kwargs):
-        messages.error(request, 'Faça login para continuar')
+        msg = "<p>Faça login para continuar</p><p>ou cadastre-se clicando <a href='cadastro'>aqui</a></p>"
+        messages.error(request, mark_safe(msg))
         return super().get(request, *args, **kwargs)
 
 class GeoLoc(LoginRequiredMixin, FormView):
