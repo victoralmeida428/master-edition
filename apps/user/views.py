@@ -78,12 +78,19 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 class ChangePassword(FormView):
     form_class = ChangePassowrdForm
     template_name = 'conta/alterasenha.html'
-    success_url = 'accounthome'
+    success_url = 'account'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user  
         return kwargs
+    
+    def form_valid(self, form: Any) -> HttpResponse:
+        user = self.request.user
+        password = form.cleaned_data.get('new_password2')
+        user.set_password(password)
+        user.save()
+        return super().form_valid(form)
     
 class PerfilView(LoginRequiredMixin, DetailView, FormView):
     model = User
@@ -186,7 +193,7 @@ class ConfirmarPin(FormView):
         self.success_url += f'?email={email}&code={code}'
         return super().form_valid(form)
 
-class ChengePass(FormView):
+class ChangeForgotPass(FormView):
     template_name = 'recuperar_senha_3.html'
     form_class = ChangeForgotPassForm
     success_url = '/'
